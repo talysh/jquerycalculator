@@ -83,7 +83,7 @@
       // Your code goes here
       var number1 = "";
       var number2 = "";
-      var operator = "";
+      var operator;
       var result;
 
       var numberClicked = false;
@@ -95,7 +95,7 @@
       function displayAllValues() {
         $("#second-number").text(number2);
         $("#first-number").text(number1);
-        $("#operator").text(operator);
+        $("#operator").text(operatorStringToSymbol(operator) || "");
         $("#result").text(result || "");
       }
 
@@ -105,7 +105,7 @@
       function clear() {
         number1 = "";
         number2 = "";
-        operator = "";
+        operator;
         result;
         numberClicked = false;
         operatorSelected = false;
@@ -157,7 +157,10 @@
           result = "";
           displayAllValues();
         }
-
+        if (number1 != "" && operatorSelected) {
+          operator = $(this).val();
+          displayAllValues();
+        }
         if (numberClicked) {
           operatorSelected = true;
           operator = $(this).val();
