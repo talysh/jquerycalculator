@@ -64,11 +64,11 @@
         <div class="card">
           <h3 class="card-header">Result</h3>
           <div class="card-body">
-            <h1 id="first-number"></h1>
-            <h1 id="operator"></h1>
-            <h1 id="second-number"></h1>
+            <h1 id="first-number" class="text-right"></h1>
+            <h1 id="operator" class="text-right"></h1>
+            <h1 id="second-number" class="text-right"></h1>
             <hr>
-            <h1 id="result"></h1>
+            <h1 id="result" class="text-right"></h1>
           </div>
         </div>
       </div>
@@ -83,30 +83,43 @@
       // Your code goes here
       var number1 = "";
       var number2 = "";
-      var operand = "";
+      var operator = "";
       var result;
 
       var numberClicked = false;
-      var operandSelected = false;
+      var operatorSelected = false;
+
+
+      // Display values of number1, number2, operator, and result in appropriate boxes.
+
+      function displayAllValues() {
+        $("#second-number").text(number2);
+        $("#first-number").text(number1);
+        $("#operator").text(operator);
+        $("#result").text(result || "");
+      }
+
+
+      // Clear all values 
 
       function clear() {
         number1 = "";
         number2 = "";
-        operand = "";
-        result = 0;
+        operator = "";
+        result;
         numberClicked = false;
-        operandSelected = false;
+        operatorSelected = false;
 
-        $("#second-number").text(number2);
-        $("#first-number").text(number1);
-        $("#operator").text(operand);
-        $("#result").text(result);
+        displayAllValues();
 
       }
 
+
+      // Number button clicked 
+
       $(".number").click(function () {
         numberClicked = true;
-        if (operandSelected) {
+        if (operatorSelected) {
           var selectedNumber = $(this).val();
           number2 += selectedNumber;
           $("#second-number").text(number2);
@@ -123,53 +136,65 @@
       });
 
 
+      // Convert operator text into a symbol
+      function operatorStringToSymbol(operator) {
+        switch (operator) {
+          case "plus": return "+";
+          case "minus": return "-";
+          case "times": return "*";
+          case "divide": return "/";
+          case "power": return "^";
+        }
+      }
+
+
+      // Operator button clicked
+
       $(".operator").click(function () {
+        if (number1 != "" && number2 != "" && operator != "") {
+          number1 = performOperation(number1, number2, operator);
+          number2 = "";
+          result = "";
+          displayAllValues();
+        }
+
         if (numberClicked) {
-          operandSelected = true;
-          operand = $(this).val();
-          $("#operator").text(operand);
-          console.log(operand);
+          operatorSelected = true;
+          operator = $(this).val();
+          $("#operator").text(operatorStringToSymbol(operator));
+          console.log(operator);
           numberClicked = false;
         } else {
         }
       });
 
-
+      // Equal button clicked
       $(".equal").click(function () {
-        if (number1 != "" && number2 != "" && operand != "") {
-          number1 = parseInt(number1);
-          number2 = parseInt(number2);
-          var result = performOperation(number1, number2, operand);
+        if (number1 != "" && number2 != "" && operator != "") {
+          var result = performOperation(number1, number2, operator);
           $("#result").text(result);
           console.log(result);
         }
       });
 
-
+      // Clear button clicked
       $(".clear").click(function () {
         clear();
       })
 
 
-      function performOperation(number1, number2, operand) {
-        if (operand === "plus") {
-          return number1 + number2;
-        } else if (operand === "minus") {
-          return number1 - number2;
-        } else if (operand === "times") {
-          return number1 * number2;
-        } else if (operand === "divide") {
-          return number1 / number2;
-        } else if (operand === "power") {
-          return Math.pow(number1, number2);
+      // Take in numbers and operators, return result.
+      function performOperation(number1, number2, operator) {
+        number1 = parseInt(number1);
+        number2 = parseInt(number2);
+        switch (operator) {
+          case "plus": return number1 + number2;
+          case "minus": return number1 - number2;
+          case "times": return number1 * number2;
+          case "divide": return number1 / number2;
+          case "power": return Math.pow(number1, number2);
         }
-
       }
-
-
-
-
-
     });
 
 
