@@ -151,16 +151,22 @@
       // Operator button clicked
 
       $(".operator").click(function () {
+
+        // If there is already number, operator, and number2, perform the operation and assign the result as new number1
         if (number1 != "" && number2 != "" && operator != "") {
           number1 = performOperation(number1, number2, operator);
           number2 = "";
           result = "";
           displayAllValues();
         }
+
+        // Ability to change the operator if a number1 already exists
         if (number1 != "" && operatorSelected) {
           operator = $(this).val();
           displayAllValues();
         }
+
+        // If there has been another number selected, select the operator.
         if (numberClicked) {
           operatorSelected = true;
           operator = $(this).val();
@@ -168,6 +174,10 @@
           console.log(operator);
           numberClicked = false;
         } else {
+          $("#result").text("Nothing to operate on");
+          setTimeout(function () {
+            $("#result").text("");
+          }, 500);
         }
       });
 
